@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap-4.0.0-dist/css/bootstrap.min.css"/>
+    <style type="text/css">
+      body {
+      }
+
+      .container {
+         width:400px !important;
+      }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+    <!--
+    <h1>Tab Context Switch</h1>
+      -->
+    <div class="container">
+
+       <div class="row">
+          <div class="col">
+              <button type="button" class="btn btn-primary">
+                Kafka <span class="badge badge-light">12</span>
+              </button>
+           </div>
+          <div class="w-100"></div>
+          <div class="col">
+              <button type="button" class="btn btn-primary">
+                Spark-Java <span class="badge badge-light">12</span>
+              </button>
+           </div>
+        </div>
+    </div>
+  </body>
+</html>
