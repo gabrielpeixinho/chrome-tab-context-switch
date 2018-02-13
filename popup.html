@@ -6,45 +6,65 @@
  -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>Tab Context Switch</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap-4.0.0-dist/css/bootstrap.min.css"/>
+    
     <style type="text/css">
-      body {
+
+      li.action{
+        text-align:center;
+        color:gray;
+      }
+      .list-group{
+        width:250px
       }
 
-      .container {
-         width:400px !important;
+      span.rmv{
+        color:gray;
+        float:right;
       }
+
+      span.badge{
+          min-width:25px;
+          margin-left:15px;
+          float:right;
+      }
+      
     </style>
 
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    -->
     <script src="popup.js"></script>
   </head>
 
   <body>
-    <!--
-    <h1>Tab Context Switch</h1>
-      -->
-    <div class="container">
+    
+    <div>
+      <ul class="list-group">
 
-       <div class="row">
-          <div class="col">
-              <button type="button" class="btn btn-primary">
-                Kafka <span class="badge badge-light">12</span>
-              </button>
-           </div>
-          <div class="w-100"></div>
-          <div class="col">
-              <button type="button" class="btn btn-primary">
-                Spark-Java <span class="badge badge-light">12</span>
-              </button>
-           </div>
-        </div>
+        <li class="action list-group-item justify-content-center">
+          <input type="text" placeholder="add..." class="add form-control">
+        </li>
+        <li class="list-group-item justify-content-around">
+          UX
+          <span class="badge badge-secondary">14</span>
+          <span class="rmv">remove</span>
+        </li>
+        <li class="list-group-item justify-content-around">
+          CAFÉ
+          <span class="badge badge-secondary">2</span>
+          <span class="rmv">remove</span>
+        </li>
+        <li class="list-group-item justify-content-around">
+          VIAGENS
+          <span class="badge badge-secondary">1</span>
+          <span class="rmv">remove</span>
+        </li>
+        <li class="action list-group-item justify-content-center">
+        <img src="more-img.png" height="25" width="35">
+          <i class="fas fa-angle-down fa-lg"></i>
+        </li>
+        
+      </ul>
     </div>
   </body>
 </html>

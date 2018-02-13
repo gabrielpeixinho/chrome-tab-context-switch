@@ -1,0 +1,8 @@
+﻿
+* uso de "pins" para deixar as abas mais utilizadas em evidência (fixas);
+
+* colocar abreviações do contexto que está sendo utilizado no ícone do plugin
+
+* acrescentar contextos mais recentes e reticências para indicar ao usuário que ele pode expandir a lista.
+
+* pensar em questões de acessibilidade
