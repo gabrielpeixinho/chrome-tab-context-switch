@@ -8,7 +8,7 @@
   <head>
     <title>Tab Context Switch</title>
     <meta charset="UTF-8">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <!--script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script-->
     <link rel="stylesheet" type="text/css" href="bootstrap-4.0.0-dist/css/bootstrap.min.css"/>
     
     <style type="text/css">
@@ -34,7 +34,8 @@
       
     </style>
 
-    <script src="popup.js"></script>
+    <script src="libs/jquery-3.3.1.min.js" type="text/javascript">
+    </script>
   </head>
 
   <body>
@@ -45,15 +46,15 @@
         <li class="action list-group-item justify-content-center">
           <input type="text" placeholder="add..." class="add form-control">
         </li>
-        <li class="list-group-item justify-content-around">
+        <li id="item1"  class="context-item list-group-item justify-content-around">
           UX
-          <span class="rmv">remove</span>
+          <span class="rmv" >remove</span>
         </li>
-        <li class="list-group-item justify-content-around">
+        <li class="context-item list-group-item justify-content-around">
           CAFÉ
           <span class="rmv">remove</span>
         </li>
-        <li class="list-group-item justify-content-around">
+        <li class="context-item list-group-item justify-content-around">
           VIAGENS
           <span class="rmv">remove</span>
         </li>
@@ -64,5 +65,6 @@
         
       </ul>
     </div>
+    <script src="popup.js"></script>
   </body>
 </html>
