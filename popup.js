@@ -1,6 +1,4 @@
 
-
-
 var app = {
 
    "init" : function( ){
@@ -13,8 +11,17 @@ var app = {
             });
        });
 
-
-   }
+       
+       $( ".add" ).keypress(function(e) {
+	         
+	   		if(e.which == 13) {
+	      		var item = $(this).val();
+	        	$(".list-group").append('<li class="context-item list-group-item justify-content-around">'
+	        							+ item.toUpperCase() + 
+	        							'<span class="rmv">remove</span></a></li>');
+	    	}
+	   });
+	}
 };
 
 $(document).ready(function () {
