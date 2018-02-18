@@ -20,7 +20,8 @@
 
   "background":{
      "scripts":[ 
-        "event-handlers/tabs-event-handler.js" 
+         "core/commands-api.js",
+         "core/chrome-acl.js"
      ],
      "persistent": true
   }
