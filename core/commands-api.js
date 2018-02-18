@@ -1,8 +1,18 @@
 
 
 var commandsApi = {
+
     updateCurrentContext: function(callback){
 
+    },
+
+    commandMessageHandler: function(request, sender, sendResponse){
+        var isCommand = request.commandName != null ? true : false;
+
+        if (isCommand){
+            console.log(request);
+            sendResponse({err: null, payload: {farewell: "goodbye" }});
+        }
     }
 };
 
@@ -31,3 +41,6 @@ var queryApi = {
         callback(err, mockedResult);
     }
 }
+
+
+chrome.runtime.onMessage.addListener(commandsApi.commandMessageHandler);
