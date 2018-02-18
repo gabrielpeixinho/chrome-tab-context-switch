@@ -32,6 +32,15 @@ var commandBuilder = {
       };
 
       return command;
+   },
+
+   queryAllContexts: function(){
+       var command = {
+           commandName: 'queryAllContexts',
+           commandPayload: { }
+      };
+
+      return command;
    }
 
 };
@@ -47,6 +56,15 @@ var commandBus = {
 var app = {
 
    "init" : function( ){
+
+       commandBus.send(commandBuilder.queryAllContexts(), function(err, queryResult){
+
+            if(err == null)
+              console.log(queryResult);
+            else
+              console.log(err);
+       });
+
        var rmvs = $(".context-item");
        
        rmvs.each(function(){
