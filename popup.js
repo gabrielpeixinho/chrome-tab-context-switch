@@ -23,11 +23,11 @@ var commandBuilder = {
       return command;
    },
 
-   createNewContext: function(contextToCreate){
+   createNewContext: function(contextName){
        var command = {
            commandName: 'createNewContext',
            commandPayload: {
-                contextToCreate: contextToCreate
+                contextName: contextName
             }
       };
 

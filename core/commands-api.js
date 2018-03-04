@@ -1,4 +1,31 @@
 
+var contextRepository = {
+    save: function(context){
+        localStorage.setItem(context.name, JSON.stringify(context));
+    },
+    getByName: function(name){
+        
+        var json = localStorage.getItem(name);
+
+        var context = json != null ? JSON.parse(json) : null;
+
+        return context;
+
+    },
+    listAll: function(){
+
+        var contexts = [];
+
+        for(var key in localStorage){
+            var context = this.getByName(key)       
+
+            if(context != null)
+               contexts.push(context);
+        }
+
+        return contexts;
+    }
+}
 
 var commandsApi = {
 
@@ -37,24 +64,20 @@ var commandsApi = {
 
            var err = null;
            var quertyResult = {
-
-               contexts: [
-                   {
-                       context_name: 'UX (mocked)',
-                       urls: [{ index: 0, url: 'http://chrome.com' }]
-                   },
-                   {
-                       context_name: 'Javascript (mocked)',
-                       urls: [{ index: 0, url: 'http://chrome.com' }]
-                   },
-                   {
-                       context_name: 'Café (mocked)',
-                       urls: [{ index: 0, url: 'http://chrome.com' }]
-                   }
-               ]
+               contexts: contextRepository.listAll()
            };
 
            callback(err, quertyResult);
+
+       },
+       'createNewContext': function(payload, callback){
+
+             var context = {
+                 name: payload.contextName,
+                 urls: [{ index: 0, url: 'http://chrome.com' }]
+             };
+
+             contextRepository.save(context);
 
        },
        'commandNotFoundFactory' : function(commandName){
