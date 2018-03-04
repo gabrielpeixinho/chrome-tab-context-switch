@@ -1,11 +1,11 @@
 
 var commandBuilder = {
 
-   changeCurrentContext: function(newContext){
+   changeCurrentContext: function(context){
        var command = {
            commandName: 'changeCurrentContext',
            commandPayload: {
-                newContext: newContext
+                changeContextTo: context
             }
       };
 
@@ -75,6 +75,12 @@ var app = {
                 var changeContextCommand = commandBuilder.changeCurrentContext(contextName);
 
                 commandBus.send(changeContextCommand, function(err, response){
+
+                    if(err != null){
+                        console.log(err);
+                        return;
+                    }
+
                 });
 
             });
@@ -84,8 +90,12 @@ var app = {
 
                 commandBus.send(deleteContextCommnad, function(err, response){
 
-                    if(err == null)
-                        contextItem.remove(); 
+                    if(err != null){
+                        console.log(err);
+                        return;
+                    }
+
+                    contextItem.remove(); 
 
                 });
             });
@@ -105,15 +115,18 @@ var app = {
 
                 commandBus.send(createNewContextCommand, function(err, response){
 
-                    if(err == null){
 
-                        var newContextItem = $('<li class="context-item list-group-item justify-content-around">'
-	        							+ contextName.toUpperCase() + 
-	        							'<span class="rmv">remove</span></a></li>');
-                        
-                        newContextItem.insertBefore($('.scroll-down-button'));
-                        
+                    if(err != null){
+                        console.log(err);
+                        return;
                     }
+
+                    var newContextItem = $('<li class="context-item list-group-item justify-content-around">'
+                                    + contextName.toUpperCase() + 
+                                    '<span class="rmv">remove</span></a></li>');
+                    
+                    newContextItem.insertBefore($('.scroll-down-button'));
+                        
 
                 });
 
