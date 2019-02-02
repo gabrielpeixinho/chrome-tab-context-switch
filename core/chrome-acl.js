@@ -10,9 +10,6 @@ chrome.tabs.onUpdated.addListener( (tabId, changeInfo, tab) => {
         commandsApi.updateCurrentContext();
         //console.log("window:"+ tab.windowId + "tab "+  tab.index + ": " + changeInfo.url);
 
-        queryApi.listAllContexts(function(err, contexts){
-            console.log(contexts);
-        });
     }
 
 });

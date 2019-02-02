@@ -57,12 +57,24 @@ var app = {
 
    "init" : function( ){
 
+        var source   = document.getElementById("main-template").innerHTML;
+        var template = Handlebars.compile(source);
+
+
        commandBus.send(commandBuilder.queryAllContexts(), function(err, queryResult){
 
-            if(err == null)
-              console.log(queryResult);
-            else
-              console.log(err);
+            if(err != null){
+                console.log(err);
+                return;
+            }
+
+            console.log(queryResult);
+
+            var context = queryResult;
+            var html    = template(context);
+
+            $('#main-container').html(html);
+
        });
 
        var rmvs = $(".context-item");
