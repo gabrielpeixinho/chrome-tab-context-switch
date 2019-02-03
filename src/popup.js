@@ -59,7 +59,31 @@ var app = {
 
         var source   = document.getElementById("main-template").innerHTML;
         var template = Handlebars.compile(source);
+        var self = this;
 
+
+        const listAllViewModel = function(queryResult){
+            var contexts = queryResult.contexts;
+            var currentContext = queryResult.currentContext;
+
+            var contextViewModels = _.map(contexts, function(context){
+
+                var currentContextName = currentContext.name;
+                var contextName = context.name;
+                var isCurrent = currentContextName == contextName;
+
+                return {
+                    name: context.name,
+                    isCurrent: isCurrent
+                }
+            });
+
+            return {
+                contexts: contextViewModels,
+                currentContext: currentContext
+            }
+
+        }
 
        commandBus.send(commandBuilder.queryAllContexts(), function(err, queryResult){
 
@@ -68,22 +92,30 @@ var app = {
                 return;
             }
 
+            console.log('queryAllContexts result is:');
             console.log(queryResult);
 
-            var context = queryResult;
-            var html    = template(context);
+            var viewModel = listAllViewModel(queryResult);
+            var html    = template(viewModel);
 
             $('#main-container').html(html);
 
+            self.bindEventsToElements();
        });
 
-       var rmvs = $(".context-item");
-       
-       rmvs.each(function(){
-            var contextItem = this;
-            var contextName = $(contextItem).data('tcsContext');
+	},
 
+    bindEventsToElements: function(){
+
+       var contextListItems = $(".context-item");
+       
+       contextListItems.each(function(){
+            var contextItem = this;
+            var contextName = $(contextItem).data('name');
+
+            
             $('.change-context-button', this).click(function(){
+
                 var changeContextCommand = commandBuilder.changeCurrentContext(contextName);
 
                 commandBus.send(changeContextCommand, function(err, response){
@@ -92,6 +124,8 @@ var app = {
                         console.log(err);
                         return;
                     }
+
+                    app.init();
 
                 });
 
@@ -116,9 +150,11 @@ var app = {
        });
 
        
-       $( ".add" ).keypress(function(e) {
+       $( "#addContextInput" ).keyup(function(e) {
            var ENTER = 13;
            var pressedKey = e.which;
+
+
 
 	   		if(pressedKey == ENTER) {
 	      		var contextName = $(this).val();
@@ -133,18 +169,11 @@ var app = {
                         return;
                     }
 
-                    var newContextItem = $('<li class="context-item list-group-item justify-content-around">'
-                                    + contextName.toUpperCase() + 
-                                    '<span class="rmv">remove</span></a></li>');
-                    
-                    newContextItem.insertBefore($('.scroll-down-button'));
-                        
-
                 });
 
 	    	}
 	   });
-	}
+    }
 };
 
 $(document).ready(function () {

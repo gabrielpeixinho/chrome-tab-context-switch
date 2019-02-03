@@ -44,12 +44,12 @@
           <ul class="list-group">
 
             <li class="action list-group-item justify-content-center">
-              <input type="text" placeholder="add..." class="add form-control">
+              <input id="addContextInput" type="text" placeholder="add..." class="add form-control">
             </li>
 
             {{#each contexts}}
-            <li id="item1"  class="context-item list-group-item justify-content-around" data-tcs-context="CAFÉ">
-              <span class="change-context-button" >{{name}}</span>
+            <li id="item1"  class="context-item list-group-item justify-content-around" data-name="{{name}}">
+              <span class="change-context-button" >{{name}} {{#if isCurrent}} * {{/if}}</span>
               <span class="rmv" >remove</span>
             </li>
             {{/each}}

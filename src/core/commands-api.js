@@ -17,13 +17,54 @@ var contextRepository = {
         var contexts = [];
 
         for(var key in localStorage){
-            var context = this.getByName(key)       
 
+            var re = /^_/;
+            var isContext = !re.test(key);
+
+            if(!isContext)
+                continue;
+
+            var context = this.getByName(key)       
             if(context != null)
                contexts.push(context);
         }
 
         return contexts;
+    }
+}
+
+const SETTINGS = '_settings';
+
+var settingsRepositoy = {
+    save: function(settings){
+        localStorage.setItem(SETTINGS, JSON.stringify(settings));
+    },
+    get: function(){
+        var json = localStorage.getItem(SETTINGS);
+
+        var settings = json != null ? JSON.parse(json) : {};
+
+        return settings;
+    }
+}
+
+var settingsService = {
+    set : function(key, value){
+        var settings = settingsRepositoy.get();
+        settings[key] = value;
+        settingsRepositoy.save(settings);
+        console.log('setting ' + key + ' changed:' + settings)
+    },
+    get : function(key){
+        var settings = settingsRepositoy.get();
+        return settings[key];
+    },
+    getCurrentContext : function(){
+        return this.get('currentContext');
+    },
+    setCurrentContext: function(context){
+        this.set('currentContext', context)
+        return this;
     }
 }
 
@@ -62,9 +103,11 @@ var commandsApi = {
     commands: {
        'queryAllContexts' : function(payload, callback){
 
+
            var err = null;
            var quertyResult = {
-               contexts: contextRepository.listAll()
+               contexts: contextRepository.listAll(),
+               currentContext: settingsService.getCurrentContext()
            };
 
            callback(err, quertyResult);
@@ -78,6 +121,18 @@ var commandsApi = {
              };
 
              contextRepository.save(context);
+
+       },
+       'changeCurrentContext' : function(changeCurrentContextCommand, callback){
+
+           var contextToBeCurrent = contextRepository.getByName(changeCurrentContextCommand.changeContextTo);
+
+           settingsService.setCurrentContext(contextToBeCurrent);
+
+           var err = null;
+           var result = null;
+
+           callback(err, result);
 
        },
        'commandNotFoundFactory' : function(commandName){
