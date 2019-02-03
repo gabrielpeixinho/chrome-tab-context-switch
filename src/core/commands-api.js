@@ -3,6 +3,9 @@ var contextRepository = {
     save: function(context){
         localStorage.setItem(context.name, JSON.stringify(context));
     },
+    delete: function(contextName){
+        localStorage.removeItem(contextName);
+    },
     getByName: function(name){
         
         var json = localStorage.getItem(name);
@@ -115,12 +118,29 @@ var commandsApi = {
        },
        'createNewContext': function(payload, callback){
 
-             var context = {
-                 name: payload.contextName,
-                 urls: [{ index: 0, url: 'http://chrome.com' }]
-             };
+           var context = {
+               name: payload.contextName,
+               urls: [{ index: 0, url: 'http://chrome.com' }]
+           };
 
-             contextRepository.save(context);
+           contextRepository.save(context);
+
+           var err = null;
+           var result = null;
+
+           callback(err, result);
+       },
+       'deleteContext' : function(deleteContextCommand, callback){
+
+           const contextName = deleteContextCommand.contextToDelete;
+
+           contextRepository.delete(contextName);
+
+
+           var err = null;
+           var result = null;
+
+           callback(err, result);
 
        },
        'changeCurrentContext' : function(changeCurrentContextCommand, callback){

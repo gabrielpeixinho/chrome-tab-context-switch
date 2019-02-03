@@ -169,6 +169,8 @@ var app = {
                         return;
                     }
 
+                    app.init();
+
                 });
 
 	    	}
