@@ -1,4 +1,24 @@
 
+
+var commandBuilder = {
+
+   updateContext: function(){
+       var command = {
+           commandName: 'updateContext',
+      };
+
+      return command;
+   }
+};
+
+var commandBus = {
+   send:  function(command, callback) {
+        chrome.runtime.sendMessage(command, function(response) {
+            callback(response.err, response.payload);
+        });
+   }
+};
+
 var contextRepository = {
     save: function(context){
         localStorage.setItem(context.name, JSON.stringify(context));
@@ -74,7 +94,18 @@ var settingsService = {
 var commandsApi = {
 
     updateCurrentContext: function(callback){
+        console.log('updateCurrentContext fired.');
 
+        const context = settingsService.getCurrentContext();
+
+        if (context == null) {
+            return;
+        }
+
+        chrome.tabs.query({ pinned: false }, function (tabs) {
+            context.tabs = tabs;
+            contextRepository.save(context);
+        });
     },
 
     commandMessageHandler: function(request, sender, sendResponse){
@@ -125,6 +156,8 @@ var commandsApi = {
 
            contextRepository.save(context);
 
+           settingsService.setCurrentContext(context);
+
            var err = null;
            var result = null;
 
@@ -143,6 +176,8 @@ var commandsApi = {
            callback(err, result);
 
        },
+       'updateContext': function(updateContextCommand, callback){
+      },
        'changeCurrentContext' : function(changeCurrentContextCommand, callback){
 
            var contextToBeCurrent = contextRepository.getByName(changeCurrentContextCommand.changeContextTo);
