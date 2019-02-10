@@ -203,15 +203,14 @@ var commandsApi = {
        'changeCurrentContext' : function(changeCurrentContextCommand, callback){
 
 
-           var currentCotext = settingsService.getCurrentContext();
+           var currentContext = settingsService.getCurrentContext();
            var contextToBeCurrent = contextRepository.getByName(changeCurrentContextCommand.changeContextTo);
 
-           var contextChanged = currentCotext.name != contextToBeCurrent.name;
+           var contextChanged = currentContext.name != contextToBeCurrent.name;
 
            if (contextChanged && confirm("deseja realmente troca de contexto?")) {
                settingsService.setCurrentContext(contextToBeCurrent);
            }
-
 
            var err = null;
            var result = null;
