@@ -77,7 +77,7 @@ var settingsService = {
         var settings = settingsRepositoy.get();
         settings[key] = value;
         settingsRepositoy.save(settings);
-        console.log('setting ' + key + ' changed:' + settings)
+        console.log('setting ' + key + ' changed:' + JSON.stringify(settings[key]))
     },
     get : function(key){
         var settings = settingsRepositoy.get();
@@ -101,7 +101,7 @@ var settingsService = {
 
     contextAutoUpdateIsEnabled: function(){
         const autoUpdateEnabled = this.get(AUTO_UPDATE_KEY);
-        return autoUpdateEnabled == 'true' ? true : false;
+        return autoUpdateEnabled == null ? true : autoUpdateEnabled;
     }
 }
 
@@ -125,10 +125,9 @@ var browserAcl = {
                 chrome.tabs.remove(tabToClose.id);
             }
 
-
+            callback();
         });
 
-        //TODO implementar fechamento das abas
     },
     onUrlTabChange: function (eventHandler /*()*/) {
 
