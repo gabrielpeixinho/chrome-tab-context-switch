@@ -150,13 +150,14 @@ var commandsApi = {
        'createNewContext': function(payload, callback){
 
            var context = {
-               name: payload.contextName,
-               urls: [{ index: 0, url: 'http://chrome.com' }]
+               name: payload.contextName
            };
 
            contextRepository.save(context);
 
            settingsService.setCurrentContext(context);
+
+           commandsApi.updateCurrentContext();
 
            var err = null;
            var result = null;
@@ -176,8 +177,6 @@ var commandsApi = {
            callback(err, result);
 
        },
-       'updateContext': function(updateContextCommand, callback){
-      },
        'changeCurrentContext' : function(changeCurrentContextCommand, callback){
 
            var contextToBeCurrent = contextRepository.getByName(changeCurrentContextCommand.changeContextTo);
