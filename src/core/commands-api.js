@@ -57,6 +57,7 @@ var contextRepository = {
 }
 
 const SETTINGS = '_settings';
+const AUTO_UPDATE_KEY = 'contextAutoUpdate';
 
 var settingsRepositoy = {
     save: function(settings){
@@ -88,6 +89,19 @@ var settingsService = {
     setCurrentContext: function(context){
         this.set('currentContext', context)
         return this;
+    },
+
+    enableContextAutoUpdate: function(){
+        this.set(AUTO_UPDATE_KEY, true);
+    },
+
+    disableContextAutoUpdate: function(){
+        this.set(AUTO_UPDATE_KEY, false);
+    },
+
+    contextAutoUpdateIsEnabled: function(){
+        const autoUpdateEnabled = this.get(AUTO_UPDATE_KEY);
+        return autoUpdateEnabled == 'true' ? true : false;
     }
 }
 
@@ -95,20 +109,39 @@ var browserAcl = {
     getTabs: function (callback /*(tabs)*/) {
         chrome.tabs.query({ pinned: false }, callback);
     },
+    replaceTabsFor: function(tabs, callback){
+
+        var openedTabs = this.getTabs(function(currentTabs){
+
+            var newTabs = tabs;
+
+            for(var i=0 ; i < newTabs.length; i++){
+                var tab = newTabs[i];
+                chrome.tabs.create({'url': tab.url, 'active': false});
+            }
+
+            for(var i=0 ; i < currentTabs.length; i++){
+                var tabToClose = currentTabs[i];
+                chrome.tabs.remove(tabToClose.id);
+            }
+
+
+        });
+
+        //TODO implementar fechamento das abas
+    },
     onUrlTabChange: function (eventHandler /*()*/) {
 
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
             if (changeInfo.url) {
                 eventHandler();
-                commandsApi.updateCurrentContext();
             }
 
         });
 
         chrome.tabs.onRemoved.addListener((tab) => {
             eventHandler();
-            commandsApi.updateCurrentContext();
         });
     }
 };
@@ -210,6 +243,13 @@ var commandsApi = {
 
            if (contextChanged && confirm("deseja realmente troca de contexto?")) {
                settingsService.setCurrentContext(contextToBeCurrent);
+
+               settingsService.disableContextAutoUpdate();
+
+               browserAcl.replaceTabsFor(contextToBeCurrent.tabs, function(){
+                   console.log("abas substituidas...");
+                    settingsService.enableContextAutoUpdate();
+               });
            }
 
            var err = null;
@@ -233,7 +273,8 @@ chrome.runtime.onMessage.addListener(commandsApi.commandMessageHandler);
 
 browserAcl.onUrlTabChange(function(){
 
-    commandsApi.updateCurrentContext();
+    if (settingsService.contextAutoUpdateIsEnabled())
+        commandsApi.updateCurrentContext();
 
 })
 
