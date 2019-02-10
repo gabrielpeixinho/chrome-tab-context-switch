@@ -91,6 +91,29 @@ var settingsService = {
     }
 }
 
+var browserAcl = {
+    getTabs: function (callback /*(tabs)*/) {
+        chrome.tabs.query({ pinned: false }, callback);
+    },
+    onUrlTabChange: function (eventHandler /*()*/) {
+
+        chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+
+            if (changeInfo.url) {
+                eventHandler();
+                commandsApi.updateCurrentContext();
+            }
+
+        });
+
+        chrome.tabs.onRemoved.addListener((tab) => {
+            eventHandler();
+            commandsApi.updateCurrentContext();
+        });
+    }
+};
+
+
 var commandsApi = {
 
     updateCurrentContext: function(callback){
@@ -102,7 +125,7 @@ var commandsApi = {
             return;
         }
 
-        browerAcl.getTabs(function (tabs) {
+        browserAcl.getTabs(function (tabs) {
             context.tabs = tabs;
             contextRepository.save(context);
         })
@@ -207,5 +230,11 @@ var commandsApi = {
 };
 
 
-
 chrome.runtime.onMessage.addListener(commandsApi.commandMessageHandler);
+
+browserAcl.onUrlTabChange(function(){
+
+    commandsApi.updateCurrentContext();
+
+})
+

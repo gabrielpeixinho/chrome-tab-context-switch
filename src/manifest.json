@@ -22,8 +22,7 @@
 
   "background":{
      "scripts":[ 
-         "core/commands-api.js",
-         "core/chrome-acl.js"
+         "core/commands-api.js"
      ],
      "persistent": true
   }
