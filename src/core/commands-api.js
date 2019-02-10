@@ -102,10 +102,10 @@ var commandsApi = {
             return;
         }
 
-        chrome.tabs.query({ pinned: false }, function (tabs) {
+        browerAcl.getTabs(function (tabs) {
             context.tabs = tabs;
             contextRepository.save(context);
-        });
+        })
     },
 
     commandMessageHandler: function(request, sender, sendResponse){

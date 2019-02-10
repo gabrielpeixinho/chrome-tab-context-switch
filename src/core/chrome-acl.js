@@ -19,3 +19,10 @@ chrome.tabs.onRemoved.addListener( (tab) => {
     commandsApi.updateCurrentContext();
 
 });
+
+
+var browerAcl = {
+    getTabs: function(callback /*(tabs)*/){
+        chrome.tabs.query({ pinned: false }, callback);
+    }
+};
